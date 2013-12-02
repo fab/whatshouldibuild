@@ -1,0 +1,9 @@
+{
+  "name": "whatshouldibuild",
+  "version": "0.0.1",
+  "dependencies": {
+    "cheerio": "~0.12.4",
+    "request": "~2.27.0"
+  },
+  "private": true
+}
