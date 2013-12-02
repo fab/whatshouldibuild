@@ -15,7 +15,11 @@ var server = http.createServer(function (req, res) {
   })
 })
 
-server.listen(8000)
+var port = process.env.PORT || 8000
+
+server.listen(port, function () {
+  console.log('Listening on port ' + port)
+})
 
 function getRandomProject(callback) {
   $ = cheerio.load(projectsHTML)
