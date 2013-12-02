@@ -10,9 +10,17 @@ request(url, function (err, res, body) {
 })
 
 var server = http.createServer(function (req, res) {
-  getRandomProject(function (title, description) {
-    res.end(title + "\n" + description)
-  })
+  var buttonHTML = '<a href="/suggest">What Should I Build?</a>'
+
+  if (req.url.match(/suggest/)) {
+    getRandomProject(function (title, description) {
+      res.writeHead(200, { 'Content-Type' : 'text/html; charset=utf-8' });
+      res.write(buttonHTML)
+      res.end('<div>' + title + '</div>' + '<div>' + description + '</div>')
+    })
+  } else {
+    res.end(buttonHTML)
+  }
 })
 
 var port = process.env.PORT || 8000
