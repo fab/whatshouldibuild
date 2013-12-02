@@ -15,11 +15,12 @@ var server = http.createServer(function (req, res) {
       'color: white; font-size: 50px;">What Should I Build?</a>'
 
   res.write('<!doctype html><html lang="en">' +
-   '<head><meta charset="utf-8"><title>What Should I Build?</title>' +
-   '<link href="http://fonts.googleapis.com/css?family=Signika+Negative" rel="stylesheet" type="text/css">' +
-   '<style type="text/css">* {font-family:"Signika Negative", sans-serif;}</style>' +
-   '</head><body><div style="text-align: center; margin-top: 100px; margin-bottom: 100px;">' +
-   buttonHTML + '</div></body></html>')
+    '<head><meta charset="utf-8"><title>What Should I Build?</title>' +
+    '<link href="http://fonts.googleapis.com/css?family=Signika+Negative"' +
+    'rel="stylesheet" type="text/css"><style type="text/css">' +
+    'body {font-family:"Signika Negative", sans-serif; background: #C0C0C0}' +
+    '</style></head><body><div style="text-align: center; margin-top: 100px;' +
+    'margin-bottom: 120px;">' + buttonHTML + '</div></body></html>')
 
   if (req.url.match(/suggest/)) {
     getRandomProject(function (title, description) {
