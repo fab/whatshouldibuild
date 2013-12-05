@@ -18,6 +18,10 @@ body {
   font-size: 50px;
 }
 
+#btn-link:hover {
+  color: #FFFF00
+}
+
 #title {
   font-size: 60px;
   width: 800px;
