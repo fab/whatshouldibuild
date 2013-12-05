@@ -13,18 +13,18 @@ request(url, function (err, res, body) {
 
 var server = http.createServer(function (req, res) {
   if (req.url.match(/css/)) {
-    var css = fs.readFileSync(__dirname + '/style.css', 'utf-8')
+    var css = fs.readFileSync(__dirname + '/public/style.css', 'utf-8')
     res.writeHead(200, {"Content-Type": "text/css"})
     res.write(css)
     res.end()
   }
 
-  var index = fs.readFileSync(__dirname + '/index.html', 'utf-8')
+  var index = fs.readFileSync(__dirname + '/public/index.html', 'utf-8')
   res.write(index)
 
   if (req.url.match(/suggest/)) {
     getRandomProject(function (title, description) {
-      var data = fs.readFileSync(__dirname + '/project.ejs', 'utf-8')
+      var data = fs.readFileSync(__dirname + '/public/project.ejs', 'utf-8')
       var html = ejs.render(data, { title: title, description: description})
       res.end(html)
     })
