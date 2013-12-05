@@ -24,13 +24,13 @@ var server = http.createServer(function (req, res) {
 
   if (req.url.match(/suggest/)) {
     getRandomProject(function (title, description) {
-      fs.readFile(__dirname + '/project.ejs', 'utf-8', function (err, data) {
-        if (err) throw err
-        var html = ejs.render(data, { title: title, description: description})
-        res.end(html)
-      })
+      var data = fs.readFileSync(__dirname + '/project.ejs', 'utf-8')
+      var html = ejs.render(data, { title: title, description: description})
+      res.end(html)
     })
   }
+
+  res.end()
 })
 
 var port = process.env.PORT || 8000
