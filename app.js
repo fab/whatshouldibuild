@@ -12,10 +12,15 @@ request(url, function (err, res, body) {
 })
 
 var server = http.createServer(function (req, res) {
-  fs.readFile(__dirname + '/index.html', 'utf-8', function (err, data) {
-    if (err) throw err
-    res.write(data)
-  })
+  if (req.url.match(/css/)) {
+    var css = fs.readFileSync(__dirname + '/style.css', 'utf-8')
+    res.writeHead(200, {"Content-Type": "text/css"})
+    res.write(css)
+    res.end()
+  }
+
+  var index = fs.readFileSync(__dirname + '/index.html', 'utf-8')
+  res.write(index)
 
   if (req.url.match(/suggest/)) {
     getRandomProject(function (title, description) {
