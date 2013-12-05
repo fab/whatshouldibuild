@@ -26,10 +26,11 @@ var server = http.createServer(function (req, res) {
 
   if (req.url.match(/suggest/)) {
     getRandomProject(function (title, description) {
-      res.end('<div><div style="font-size: 60px; width: 800px; margin:0 auto;' +
-        'text-align: center">' + title + '</div>' + '<div style=' +
-        '"margin:0 auto; margin-top: 40px; width: 800px; font-size: 25px;' +
-        'text-align:justify">' + description + '</div></div>')
+      fs.readFile(__dirname + '/project.ejs', 'utf-8', function (err, data) {
+        if (err) throw err
+        var html = ejs.render(data, { title: title, description: description})
+        res.end(html)
+      })
     })
   }
 })
