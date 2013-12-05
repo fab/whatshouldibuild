@@ -1,6 +1,8 @@
 var request = require('request')
   , cheerio = require('cheerio')
   , http    = require('http')
+  , ejs     = require('ejs')
+  , fs      = require('fs')
 
 var url = 'https://github.com/karan/Projects/blob/master/README-scratch.md'
   , projectsHTML

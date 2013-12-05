@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "cheerio": "~0.12.4",
-    "request": "~2.27.0"
+    "request": "~2.27.0",
+    "ejs": "~0.8.5"
   },
   "private": true
 }
