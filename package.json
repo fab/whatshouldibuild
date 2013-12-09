@@ -4,7 +4,8 @@
   "dependencies": {
     "cheerio": "~0.12.4",
     "request": "~2.27.0",
-    "ejs": "~0.8.5"
+    "ejs": "~0.8.5",
+    "mime": "~1.2.11"
   },
   "private": true
 }

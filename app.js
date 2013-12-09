@@ -3,6 +3,8 @@ var request = require('request')
   , http    = require('http')
   , ejs     = require('ejs')
   , fs      = require('fs')
+  , path    = require('path')
+  , mime    = require('mime')
 
 var url = 'https://github.com/karan/Projects/blob/master/README-scratch.md'
   , projectsHTML
