@@ -5,11 +5,12 @@ var request = require('request')
   , fs      = require('fs')
   , path    = require('path')
   , mime    = require('mime')
+  , url     = require('url')
 
-var url = 'https://github.com/karan/Projects/blob/master/README-scratch.md'
+var projectsURL = 'https://github.com/karan/Projects/blob/master/README-scratch.md'
   , projectsHTML
 
-request(url, function (err, res, body) {
+request(projectsURL, function (err, res, body) {
   projectsHTML = body
 })
 
