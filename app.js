@@ -14,35 +14,38 @@ request(projectsURL, function (err, res, body) {
   projectsHTML = body
 })
 
-var server = http.createServer(function (req, res) {
-  if (req.url.match(/css/)) {
-    var css = fs.readFileSync(__dirname + '/public/style.css', 'utf-8')
-    res.writeHead(200, {"Content-Type": "text/css"})
-    res.write(css)
-    res.end()
+var Application = function (req, res) {
+  this.req = req
+  this.res = res
+  this.staticPages = {
+    index : path.join(__dirname, 'public', 'index.html')
   }
-
-  var index = fs.readFileSync(__dirname + '/public/index.html', 'utf-8')
-  res.write(index)
-
-  if (req.url.match(/suggest/)) {
-    getRandomProject(function (title, description) {
-      var data = fs.readFileSync(__dirname + '/public/project.ejs', 'utf-8')
-      var html = ejs.render(data, { title: title, description: description})
-      res.end(html)
-    })
+  this.templates = {
+    suggest : path.join(__dirname, 'public', 'project.ejs')
   }
+}
 
-  res.end()
-})
+Application.prototype.serveStatic = function (localPath, mimeType) {
+  var self = this
+  fs.readFile(localPath, 'utf-8', function (err, contents) {
+    self.throwOnError(err)
+    var mimeType = !mimeType ? mime.lookup(localPath) : mimeType
+    self.res.writeHead(200, { "Content-Type" : mimeType })
+    self.res.end(contents)
+  })
+}
 
-var port = process.env.PORT || 8000
+Application.prototype.serveTemplate = function (templatePath, templateData) {
+  var self = this
+  fs.readFile(templatePath, 'utf-8', function (err, template) {
+    self.throwOnError(err)
+    var html = ejs.render(template, templateData)
+    self.res.writeHead(200, { "Content-Type" : "text/html" })
+    self.res.end(html)
+  })
+}
 
-server.listen(port, function () {
-  console.log('Listening on port ' + port)
-})
-
-function getRandomProject(callback) {
+Application.prototype.getRandomProject = function (callback) {
   $ = cheerio.load(projectsHTML)
   var projects = $('.markdown-body p')
     , randNum = Math.floor(Math.random() * projects.length)
@@ -52,3 +55,45 @@ function getRandomProject(callback) {
 
   callback(title, description)
 }
+
+Application.prototype.throwOnError = function (err) {
+  if (err) {
+    throw err
+  }
+}
+
+var server = http.createServer(function (req, res) {
+  var app = new Application(req, res)
+
+  var urlPathName = url.parse(req.url).pathname
+  var localPath = path.join(__dirname, 'public', urlPathName)
+
+  fs.stat(localPath, function (err, stats) {
+    var fileExists = !err && stats.isFile()
+    if (fileExists) {
+      app.serveStatic(localPath)
+    } else {
+      switch (urlPathName) {
+        case '':
+        case '/':
+          app.serveStatic(app.staticPages.index)
+          break
+        case '/suggest':
+          app.getRandomProject(function (title, description) {
+            var templateData = { title : title , description : description }
+            app.serveTemplate(app.templates.suggest, templateData)
+          })
+          break
+        default:
+          res.writeHead(404, { "Content-Type" : "text/plain" })
+          res.end('Not Found')
+      }
+    }
+  })
+})
+
+var port = process.env.PORT || 8000
+
+server.listen(port, function () {
+  console.log('Listening on port ' + port)
+})
