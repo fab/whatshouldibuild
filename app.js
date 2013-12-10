@@ -35,8 +35,9 @@ Application.prototype.serveStatic = function (localPath, mimeType) {
   })
 }
 
-Application.prototype.serveTemplate = function (templatePath, templateData) {
+Application.prototype.serveTemplate = function (templateName, templateData) {
   var self = this
+  var templatePath = self.templates[templateName]
   fs.readFile(templatePath, 'utf-8', function (err, template) {
     self.throwOnError(err)
     var html = ejs.render(template, templateData)
@@ -81,7 +82,7 @@ var server = http.createServer(function (req, res) {
         case '/suggest':
           app.getRandomProject(function (title, description) {
             var templateData = { title : title , description : description }
-            app.serveTemplate(app.templates.suggest, templateData)
+            app.serveTemplate('suggest', templateData)
           })
           break
         default:
