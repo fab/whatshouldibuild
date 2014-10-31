@@ -7,7 +7,7 @@ var request = require('request')
   , mime    = require('mime')
   , url     = require('url')
 
-var projectsURL = 'https://github.com/karan/Projects/blob/master/README-scratch.md'
+var projectsURL = 'https://github.com/karan/Projects/blob/master/README.md'
   , projectsHTML
 
 request(projectsURL, function (err, res, body) {
